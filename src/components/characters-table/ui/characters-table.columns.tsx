@@ -2,6 +2,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 
 import { type Character } from "../../../data/types";
 import { cn } from "../../../utils/cn";
+import { Badge } from "../../ui/badge";
 import { type CharactersTableFeatures } from "./characters-table.features";
 
 const columnHelper = createColumnHelper<CharactersTableFeatures, Character>();
@@ -12,11 +13,13 @@ const charactersTableColumns = columnHelper.columns([
     cell: ({ getValue, row }) => {
       const value = getValue();
       return (
-        <img
-          src={value}
-          alt={row.original.name}
-          className="size-10 rounded-full border object-cover"
-        />
+        <a href={value} target="_blank" rel="noopener noreferrer">
+          <img
+            src={value}
+            alt={row.original.name}
+            className="size-10 rounded-full border object-cover"
+          />
+        </a>
       );
     },
   }),
@@ -39,16 +42,7 @@ const charactersTableColumns = columnHelper.columns([
         Dead: "bg-red-100 text-red-700",
         unknown: "bg-zinc-100 text-zinc-700",
       };
-      return (
-        <span
-          className={cn(
-            "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
-            colors[value],
-          )}
-        >
-          {value}
-        </span>
-      );
+      return <Badge className={cn("", colors[value])}>{value}</Badge>;
     },
   }),
   columnHelper.accessor("gender", {
@@ -61,15 +55,19 @@ const charactersTableColumns = columnHelper.columns([
         Genderless: "bg-violet-100 text-violet-700",
         unknown: "bg-zinc-100 text-zinc-700",
       };
+      const icons: Record<Character["gender"], string> = {
+        Female: "/icons.svg#female-icon",
+        Male: "/icons.svg#male-icon",
+        Genderless: "/icons.svg#genderless-icon",
+        unknown: "/icons.svg#genderless-icon",
+      };
       return (
-        <span
-          className={cn(
-            "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
-            colors[value],
-          )}
-        >
+        <Badge className={cn("", colors[value])}>
+          <svg aria-hidden="true" role="presentation" className="size-4">
+            <use href={icons[value]}></use>
+          </svg>
           {value}
-        </span>
+        </Badge>
       );
     },
   }),
