@@ -1,7 +1,8 @@
 import { createColumnHelper } from "@tanstack/react-table";
+
+import { type Character } from "../../../data/types";
+import { cn } from "../../../utils/cn";
 import { type CharactersTableFeatures } from "./characters-table.features";
-import type { Character } from "../../utils/interfaces";
-import { cn } from "../../utils/cn";
 
 const columnHelper = createColumnHelper<CharactersTableFeatures, Character>();
 

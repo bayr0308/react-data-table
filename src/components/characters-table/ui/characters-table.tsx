@@ -1,19 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import type { Character, Info } from "../../utils/interfaces";
 import { useTable } from "@tanstack/react-table";
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "../ui/table";
+import { useState } from "react";
+
+import { Button } from "../../ui/button";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "../../ui/table";
+import { EMPTY_DATA } from "../model/characters-table.constants";
+import { fetchCharactersData } from "../model/characters-table.utils";
 import { charactersTableColumns } from "./characters-table.columns";
 import { charactersTableFeatures } from "./characters-table.features";
-import { Button } from "../ui/button";
-
-const EMPTY_DATA: Character[] = [];
-
-const fetchData = async (page: number): Promise<Info<Character[]>> => {
-  const response = await fetch(`https://rickandmortyapi.com/api/character/?page=${page}`);
-  const data: Info<Character[]> = await response.json();
-  return data;
-};
 
 interface CharactersTableProps {}
 
@@ -22,7 +16,7 @@ const CharactersTable = ({}: CharactersTableProps) => {
 
   const charactersQuery = useQuery({
     queryKey: ["characters", page],
-    queryFn: () => fetchData(page),
+    queryFn: () => fetchCharactersData(page),
     placeholderData: (previousData) => previousData,
   });
 

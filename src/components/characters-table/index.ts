@@ -1,1 +1,1 @@
-export * from "./characters-table";
+export * from "./ui/characters-table";

@@ -1,3 +1,14 @@
 {
-  "$schema": "./node_modules/oxfmt/configuration_schema.json"
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "sortImports": {
+    "groups": [
+      ["value-builtin", "value-external"],
+      { "newlinesBetween": true },
+      ["value-parent", "value-sibling", "value-index", "unknown"]
+    ]
+  },
+  "sortTailwindcss": {
+    "stylesheet": "./src/index.css",
+    "functions": ["clsx", "cn", "twmerge", "cva"]
+  }
 }
