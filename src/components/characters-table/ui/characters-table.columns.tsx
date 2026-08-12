@@ -56,10 +56,10 @@ const charactersTableColumns = columnHelper.columns([
         unknown: "bg-zinc-100 text-zinc-700",
       };
       const icons: Record<Character["gender"], string> = {
-        Female: "/icons.svg#female-icon",
-        Male: "/icons.svg#male-icon",
-        Genderless: "/icons.svg#genderless-icon",
-        unknown: "/icons.svg#genderless-icon",
+        Female: `${import.meta.env.BASE_URL}icons.svg#female-icon`,
+        Male: `${import.meta.env.BASE_URL}icons.svg#male-icon`,
+        Genderless: `${import.meta.env.BASE_URL}icons.svg#genderless-icon`,
+        unknown: `${import.meta.env.BASE_URL}icons.svg#genderless-icon`,
       };
       return (
         <Badge className={cn("", colors[value])}>
