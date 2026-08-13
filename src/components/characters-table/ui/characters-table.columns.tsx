@@ -8,12 +8,15 @@ import { type CharactersTableFeatures } from "./characters-table.features";
 const columnHelper = createColumnHelper<CharactersTableFeatures, Character>();
 
 const charactersTableColumns = columnHelper.columns([
+  columnHelper.accessor("id", {
+    header: "ID",
+  }),
   columnHelper.accessor("image", {
     header: "Avatar",
     cell: ({ getValue, row }) => {
       const value = getValue();
       return (
-        <a href={value} target="_blank" rel="noopener noreferrer">
+        <a href={value} target="_blank" rel="noopener noreferrer" className="inline-block">
           <img
             src={value}
             alt={row.original.name}

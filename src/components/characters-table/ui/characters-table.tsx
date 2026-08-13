@@ -1,10 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useTable } from "@tanstack/react-table";
 import { useState } from "react";
 
 import { Button } from "../../ui/button";
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "../../ui/table";
-import { EMPTY_DATA } from "../model/characters-table.constants";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../ui/table";
+import { PAGE_SIZE } from "../model/characters-table.constants";
 import { fetchCharactersData } from "../model/characters-table.utils";
 import { charactersTableColumns } from "./characters-table.columns";
 import { charactersTableFeatures } from "./characters-table.features";
@@ -12,23 +12,23 @@ import { charactersTableFeatures } from "./characters-table.features";
 interface CharactersTableProps {}
 
 const CharactersTable = ({}: CharactersTableProps) => {
-  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: PAGE_SIZE });
 
   const charactersQuery = useQuery({
-    queryKey: ["characters", page],
-    queryFn: () => fetchCharactersData(page),
-    placeholderData: (previousData) => previousData,
+    queryKey: ["characters", pagination],
+    queryFn: () => fetchCharactersData({ page: pagination.pageIndex + 1 }),
+    placeholderData: keepPreviousData,
   });
 
   const table = useTable({
     features: charactersTableFeatures,
     columns: charactersTableColumns,
-    data: charactersQuery.data?.results ?? EMPTY_DATA,
+    data: charactersQuery.data?.results ?? [],
+    rowCount: charactersQuery.data?.info?.count ?? 0,
+    state: { pagination },
+    onPaginationChange: setPagination,
+    manualPagination: true,
   });
-
-  const totalPages = charactersQuery.data?.info?.pages ?? 1;
-  const canGoPrevious = page > 1;
-  const canGoNext = page < totalPages;
 
   return (
     <div className="overflow-hidden rounded-lg border">
@@ -57,6 +57,12 @@ const CharactersTable = ({}: CharactersTableProps) => {
                 ))}
               </TableRow>
             ))
+          ) : charactersQuery.status === "pending" ? (
+            <TableRow>
+              <TableCell colSpan={charactersTableColumns.length} className="h-24 text-center">
+                Loading...
+              </TableCell>
+            </TableRow>
           ) : (
             <TableRow>
               <TableCell colSpan={charactersTableColumns.length} className="h-24 text-center">
@@ -68,16 +74,13 @@ const CharactersTable = ({}: CharactersTableProps) => {
       </Table>
       <div className="flex items-center justify-between border-t p-3">
         <p className="text-sm">
-          Page {page} of {totalPages}
+          Page {pagination.pageIndex + 1} of {table.getPageCount()}
         </p>
         <div className="flex items-center gap-2">
-          <Button
-            onClick={() => setPage((currentPage) => currentPage - 1)}
-            disabled={!canGoPrevious}
-          >
+          <Button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
             Previous
           </Button>
-          <Button onClick={() => setPage((currentPage) => currentPage + 1)} disabled={!canGoNext}>
+          <Button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
             Next
           </Button>
         </div>

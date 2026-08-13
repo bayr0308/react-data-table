@@ -1,5 +1,3 @@
-import { type Character } from "../../../data/types";
+const PAGE_SIZE = 20;
 
-const EMPTY_DATA: Character[] = [];
-
-export { EMPTY_DATA };
+export { PAGE_SIZE };

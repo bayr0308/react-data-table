@@ -1,7 +1,21 @@
-import { type Info, type Character } from "../../../data/types";
+import { type Character, type CharacterFilter, type Info } from "../../../data/types";
 
-const fetchCharactersData = async (page: number): Promise<Info<Character[]>> => {
-  const response = await fetch(`https://rickandmortyapi.com/api/character/?page=${page}`);
+const fetchCharactersData = async (filter: CharacterFilter): Promise<Info<Character[]>> => {
+  const params = new URLSearchParams();
+  Object.entries(filter).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      params.set(key, String(value));
+    }
+  });
+
+  const url = new URL("https://rickandmortyapi.com/api/character/");
+  url.search = params.toString();
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`HTTP Error: ${response.status}`);
+  }
+
   const data: Info<Character[]> = await response.json();
   return data;
 };
