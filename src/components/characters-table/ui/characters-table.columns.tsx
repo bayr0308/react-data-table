@@ -3,11 +3,32 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { type Character } from "../../../data/types";
 import { cn } from "../../../utils/cn";
 import { Badge } from "../../ui/badge";
+import { Button } from "../../ui/button";
+import { CharactersTableActions } from "./characters-table.actions";
 import { type CharactersTableFeatures } from "./characters-table.features";
 
 const columnHelper = createColumnHelper<CharactersTableFeatures, Character>();
 
 const charactersTableColumns = columnHelper.columns([
+  columnHelper.display({
+    id: "select",
+    header: ({ table }) => (
+      <input
+        type="checkbox"
+        checked={table.getIsAllPageRowsSelected()}
+        onChange={(e) => table.toggleAllPageRowsSelected(e.target.checked)}
+      />
+    ),
+    cell: ({ row }) => {
+      return (
+        <input
+          type="checkbox"
+          checked={row.getIsSelected()}
+          onChange={(e) => row.toggleSelected(e.target.checked)}
+        />
+      );
+    },
+  }),
   columnHelper.accessor("id", {
     header: "ID",
   }),
@@ -27,7 +48,25 @@ const charactersTableColumns = columnHelper.columns([
     },
   }),
   columnHelper.accessor("name", {
-    header: "Name",
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted();
+      return (
+        <Button onClick={() => column.toggleSorting(isSorted === "asc")}>
+          <svg
+            aria-hidden="true"
+            role="presentation"
+            className={cn(
+              "size-4",
+              isSorted !== false ? "text-blue-500" : "",
+              isSorted === "asc" ? "rotate-180" : "",
+            )}
+          >
+            <use href={`${import.meta.env.BASE_URL}icons.svg#arrow-up-icon`}></use>
+          </svg>
+          Name
+        </Button>
+      );
+    },
     cell: ({ getValue }) => {
       const value = getValue();
       return <span className="font-medium">{value}</span>;
@@ -37,7 +76,17 @@ const charactersTableColumns = columnHelper.columns([
     header: "Species",
   }),
   columnHelper.accessor("status", {
-    header: "Status",
+    header: ({ column }) => {
+      const filterValue = column.getFilterValue() as string | undefined;
+      return (
+        <select value={filterValue} onChange={(e) => column.setFilterValue(e.target.value)}>
+          <option value="">Status</option>
+          <option value="Alive">Alive</option>
+          <option value="Dead">Dead</option>
+          <option value="unknown">Unknown</option>
+        </select>
+      );
+    },
     cell: ({ getValue }) => {
       const value = getValue();
       const colors: Record<Character["status"], string> = {
@@ -49,7 +98,18 @@ const charactersTableColumns = columnHelper.columns([
     },
   }),
   columnHelper.accessor("gender", {
-    header: "Gender",
+    header: ({ column }) => {
+      const filterValue = column.getFilterValue() as string | undefined;
+      return (
+        <select value={filterValue} onChange={(e) => column.setFilterValue(e.target.value)}>
+          <option value="">Gender</option>
+          <option value="Female">Female</option>
+          <option value="Male">Male</option>
+          <option value="Genderless">Genderless</option>
+          <option value="unknown">Unknown</option>
+        </select>
+      );
+    },
     cell: ({ getValue }) => {
       const value = getValue();
       const colors: Record<Character["gender"], string> = {
@@ -93,6 +153,12 @@ const charactersTableColumns = columnHelper.columns([
     cell: ({ getValue }) => {
       const value = getValue();
       return <span>{value.length} episodes</span>;
+    },
+  }),
+  columnHelper.display({
+    id: "actions",
+    cell: ({ row }) => {
+      return <CharactersTableActions row={row} />;
     },
   }),
 ]);

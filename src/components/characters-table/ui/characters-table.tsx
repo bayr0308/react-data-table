@@ -1,5 +1,11 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useTable } from "@tanstack/react-table";
+import {
+  useTable,
+  type ColumnFiltersState,
+  type PaginationState,
+  type RowSelectionState,
+  type SortingState,
+} from "@tanstack/react-table";
 import { useState } from "react";
 
 import { Button } from "../../ui/button";
@@ -12,11 +18,21 @@ import { charactersTableFeatures } from "./characters-table.features";
 interface CharactersTableProps {}
 
 const CharactersTable = ({}: CharactersTableProps) => {
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: PAGE_SIZE });
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: PAGE_SIZE,
+  });
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   const charactersQuery = useQuery({
-    queryKey: ["characters", pagination],
-    queryFn: () => fetchCharactersData({ page: pagination.pageIndex + 1 }),
+    queryKey: ["characters", pagination, columnFilters],
+    queryFn: () =>
+      fetchCharactersData({
+        page: pagination.pageIndex + 1,
+        ...Object.fromEntries(columnFilters.map((filter) => [filter.id, filter.value])),
+      }),
     placeholderData: keepPreviousData,
   });
 
@@ -25,9 +41,14 @@ const CharactersTable = ({}: CharactersTableProps) => {
     columns: charactersTableColumns,
     data: charactersQuery.data?.results ?? [],
     rowCount: charactersQuery.data?.info?.count ?? 0,
-    state: { pagination },
+    state: { pagination, sorting, columnFilters, rowSelection },
     onPaginationChange: setPagination,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onRowSelectionChange: setRowSelection,
     manualPagination: true,
+    manualSorting: false,
+    manualFiltering: true,
   });
 
   return (
@@ -73,9 +94,15 @@ const CharactersTable = ({}: CharactersTableProps) => {
         </TableBody>
       </Table>
       <div className="flex items-center justify-between border-t p-3">
-        <p className="text-sm">
-          Page {pagination.pageIndex + 1} of {table.getPageCount()}
-        </p>
+        <div className="space-y-1">
+          <p className="text-sm">
+            Page {pagination.pageIndex + 1} of {table.getPageCount()}
+          </p>
+          <p className="text-sm">
+            {table.getFilteredSelectedRowModel().rows.length} of{" "}
+            {table.getFilteredRowModel().rows.length} row(s) selected.
+          </p>
+        </div>
         <div className="flex items-center gap-2">
           <Button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
             Previous
