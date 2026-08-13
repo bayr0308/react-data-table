@@ -1,8 +1,8 @@
 import { type Row } from "@tanstack/react-table";
 
-import { type Character } from "../../../data/types";
-import { Button } from "../../ui/button";
 import { type CharactersTableFeatures } from "./characters-table.features";
+import { Button } from "@/components/ui/button";
+import { type Character } from "@/data/types";
 
 interface CharactersTableActionsProps {
   row: Row<CharactersTableFeatures, Character>;

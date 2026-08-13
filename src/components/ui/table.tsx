@@ -1,6 +1,6 @@
 import { type ComponentProps } from "react";
 
-import { cn } from "../../utils/cn";
+import { cn } from "@/lib/utils";
 
 const Table = ({ className, ...props }: ComponentProps<"table">) => {
   return (
@@ -74,4 +74,4 @@ const TableCell = ({ className, ...props }: ComponentProps<"td">) => {
   );
 };
 
-export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell };
+export { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow };

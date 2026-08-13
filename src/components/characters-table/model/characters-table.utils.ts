@@ -1,4 +1,4 @@
-import { type Character, type CharacterFilter, type Info } from "../../../data/types";
+import { type Character, type CharacterFilter, type Info } from "@/data/types";
 
 const fetchCharactersData = async (filter: CharacterFilter): Promise<Info<Character[]>> => {
   const params = new URLSearchParams();

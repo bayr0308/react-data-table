@@ -1,11 +1,11 @@
 import { createColumnHelper } from "@tanstack/react-table";
 
-import { type Character } from "../../../data/types";
-import { cn } from "../../../utils/cn";
-import { Badge } from "../../ui/badge";
-import { Button } from "../../ui/button";
 import { CharactersTableActions } from "./characters-table.actions";
 import { type CharactersTableFeatures } from "./characters-table.features";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { type Character } from "@/data/types";
+import { cn } from "@/lib/utils";
 
 const columnHelper = createColumnHelper<CharactersTableFeatures, Character>();
 
@@ -72,7 +72,7 @@ const charactersTableColumns = columnHelper.columns([
     },
     cell: ({ getValue }) => {
       const value = getValue();
-      return <div className="font-medium truncate">{value}</div>;
+      return <div className="truncate font-medium">{value}</div>;
     },
     size: 200,
   }),

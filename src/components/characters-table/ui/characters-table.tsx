@@ -9,12 +9,19 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-import { Button } from "../../ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../ui/table";
 import { PAGE_SIZE } from "../model/characters-table.constants";
 import { fetchCharactersData } from "../model/characters-table.utils";
 import { charactersTableColumns } from "./characters-table.columns";
 import { charactersTableFeatures } from "./characters-table.features";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface CharactersTableProps {}
 
