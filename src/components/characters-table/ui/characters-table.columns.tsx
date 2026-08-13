@@ -28,9 +28,11 @@ const charactersTableColumns = columnHelper.columns([
         />
       );
     },
+    size: 40,
   }),
   columnHelper.accessor("id", {
     header: "ID",
+    size: 60,
   }),
   columnHelper.accessor("image", {
     header: "Avatar",
@@ -46,6 +48,7 @@ const charactersTableColumns = columnHelper.columns([
         </a>
       );
     },
+    size: 80,
   }),
   columnHelper.accessor("name", {
     header: ({ column }) => {
@@ -69,11 +72,13 @@ const charactersTableColumns = columnHelper.columns([
     },
     cell: ({ getValue }) => {
       const value = getValue();
-      return <span className="font-medium">{value}</span>;
+      return <div className="font-medium truncate">{value}</div>;
     },
+    size: 200,
   }),
   columnHelper.accessor("species", {
     header: "Species",
+    size: 120,
   }),
   columnHelper.accessor("status", {
     header: ({ column }) => {
@@ -96,6 +101,7 @@ const charactersTableColumns = columnHelper.columns([
       };
       return <Badge className={cn("", colors[value])}>{value}</Badge>;
     },
+    size: 90,
   }),
   columnHelper.accessor("gender", {
     header: ({ column }) => {
@@ -133,20 +139,23 @@ const charactersTableColumns = columnHelper.columns([
         </Badge>
       );
     },
+    size: 110,
   }),
   columnHelper.accessor("origin", {
     header: "Origin",
     cell: ({ getValue }) => {
       const value = getValue();
-      return <span>{value.name}</span>;
+      return <div className="truncate">{value.name}</div>;
     },
+    size: 200,
   }),
   columnHelper.accessor("location", {
     header: "Location",
     cell: ({ getValue }) => {
       const value = getValue();
-      return <span>{value.name}</span>;
+      return <div className="truncate">{value.name}</div>;
     },
+    size: 200,
   }),
   columnHelper.accessor("episode", {
     header: "Episodes",
@@ -154,12 +163,14 @@ const charactersTableColumns = columnHelper.columns([
       const value = getValue();
       return <span>{value.length} episodes</span>;
     },
+    size: 110,
   }),
   columnHelper.display({
     id: "actions",
     cell: ({ row }) => {
       return <CharactersTableActions row={row} />;
     },
+    size: 80,
   }),
 ]);
 

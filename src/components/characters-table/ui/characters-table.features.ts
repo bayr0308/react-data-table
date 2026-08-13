@@ -1,5 +1,6 @@
 import {
   columnFilteringFeature,
+  columnSizingFeature,
   columnVisibilityFeature,
   createSortedRowModel,
   rowPaginationFeature,
@@ -12,6 +13,7 @@ import {
 
 const charactersTableFeatures = tableFeatures({
   columnFilteringFeature,
+  columnSizingFeature,
   columnVisibilityFeature,
   rowPaginationFeature,
   rowSelectionFeature,

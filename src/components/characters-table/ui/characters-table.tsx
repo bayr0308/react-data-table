@@ -5,6 +5,7 @@ import {
   type PaginationState,
   type RowSelectionState,
   type SortingState,
+  type Updater,
 } from "@tanstack/react-table";
 import { useState } from "react";
 
@@ -36,6 +37,11 @@ const CharactersTable = ({}: CharactersTableProps) => {
     placeholderData: keepPreviousData,
   });
 
+  const handleColumnFiltersChange = (updater: Updater<ColumnFiltersState>) => {
+    setColumnFilters(updater);
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  };
+
   const table = useTable({
     features: charactersTableFeatures,
     columns: charactersTableColumns,
@@ -44,7 +50,7 @@ const CharactersTable = ({}: CharactersTableProps) => {
     state: { pagination, sorting, columnFilters, rowSelection },
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    onColumnFiltersChange: handleColumnFiltersChange,
     onRowSelectionChange: setRowSelection,
     manualPagination: true,
     manualSorting: false,
@@ -53,13 +59,18 @@ const CharactersTable = ({}: CharactersTableProps) => {
 
   return (
     <div className="overflow-hidden rounded-lg border">
-      <Table>
+      <Table className="w-full table-fixed">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    style={{
+                      width: header.getSize(),
+                    }}
+                  >
                     {header.isPlaceholder ? null : <table.FlexRender header={header} />}
                   </TableHead>
                 );
