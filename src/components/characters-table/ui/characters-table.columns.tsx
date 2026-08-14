@@ -54,13 +54,13 @@ const charactersTableColumns = columnHelper.columns([
     header: ({ column }) => {
       const isSorted = column.getIsSorted();
       return (
-        <Button onClick={() => column.toggleSorting(isSorted === "asc")}>
+        <Button variant="ghost" onClick={() => column.toggleSorting(isSorted === "asc")}>
           <svg
             aria-hidden="true"
             role="presentation"
             className={cn(
               "size-4",
-              isSorted !== false ? "text-blue-500" : "",
+              isSorted !== false ? "text-primary" : "",
               isSorted === "asc" ? "rotate-180" : "",
             )}
           >

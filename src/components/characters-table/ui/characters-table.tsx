@@ -122,10 +122,18 @@ const CharactersTable = ({}: CharactersTableProps) => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+          <Button
+            variant="secondary"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
             Previous
           </Button>
-          <Button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+          <Button
+            variant="secondary"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
             Next
           </Button>
         </div>

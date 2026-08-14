@@ -32,7 +32,7 @@ const TableFooter = ({ className, ...props }: ComponentProps<"tfoot">) => {
   return (
     <tfoot
       data-slot="table-footer"
-      className={cn("border-t bg-gray-100 font-medium [&>tr]:last:border-b-0", className)}
+      className={cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className)}
       {...props}
     />
   );
@@ -43,7 +43,7 @@ const TableRow = ({ className, ...props }: ComponentProps<"tr">) => {
     <tr
       data-slot="table-row"
       className={cn(
-        "border-b transition-colors hover:bg-gray-100 has-aria-expanded:bg-gray-100 data-[state=selected]:bg-gray-200",
+        "border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted",
         className,
       )}
       {...props}
@@ -56,7 +56,7 @@ const TableHead = ({ className, ...props }: ComponentProps<"th">) => {
     <th
       data-slot="table-head"
       className={cn(
-        "h-10 px-2 text-left align-middle font-medium whitespace-nowrap has-[[role=checkbox]]:pr-0",
+        "h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pr-0",
         className,
       )}
       {...props}
@@ -68,7 +68,7 @@ const TableCell = ({ className, ...props }: ComponentProps<"td">) => {
   return (
     <td
       data-slot="table-cell"
-      className={cn("p-2 align-middle whitespace-nowrap has-[[role=checkbox]]:pr-0", className)}
+      className={cn("p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0", className)}
       {...props}
     />
   );

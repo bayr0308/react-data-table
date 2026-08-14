@@ -11,7 +11,7 @@ interface CharactersTableActionsProps {
 const CharactersTableActions = ({ row }: CharactersTableActionsProps) => {
   return (
     <div>
-      <Button>Edit {row.original.id}</Button>
+      <Button variant="outline">Edit {row.original.id}</Button>
     </div>
   );
 };
